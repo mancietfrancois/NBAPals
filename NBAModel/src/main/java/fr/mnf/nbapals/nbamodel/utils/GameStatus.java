@@ -22,11 +22,12 @@ package fr.mnf.nbapals.nbamodel.utils;
  * @author François_2
  */
 public enum GameStatus {
-    FINAL("FINAL"), 
-    FINAL_OT("FINAL/OT"),
+
+    FINAL("FINAL"),
+    FINAL_OT("FINAL_OT"),
     POSTPONED("POSTPONED"),
     TO_BE_PLAYED("TO_BE_PLAYED");
-   
+
     private final String value;
 
     GameStatus(String value) {
@@ -41,20 +42,21 @@ public enum GameStatus {
     public String toString() {
         return this.getValue();
     }
-    
+
     public static GameStatus fromString(String text) {
-    if (text != null) {
-      for (GameStatus status : GameStatus.values()) {
-        if (text.equalsIgnoreCase(status.value)) {
-          return status;
+        if (text != null) {
+            for (GameStatus status : GameStatus.values()) {
+                if (text.equalsIgnoreCase(status.value)) {
+                    return status;
+                }
+            }
+            if (text.toUpperCase().matches("FINAL/([0-9]*)OT")) {
+                return GameStatus.FINAL_OT;
+            }
         }
-      }
+        //In case there are several overtimes, text could be "Final/2OT" 
+        //or "Final/3OT" ...
+
+        return GameStatus.TO_BE_PLAYED;
     }
-    //In case there ar several overtimes, text could be "Final/2OT" 
-    //or "Final/3OT" ...
-    if (text.toUpperCase().matches("FINAL/([0-9]*)OT")) {
-        return GameStatus.FINAL_OT;
-    }
-    return GameStatus.TO_BE_PLAYED;
-  }
 }

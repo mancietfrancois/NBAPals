@@ -15,12 +15,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package fr.mnf.nbapals.test.nbamodel;
+package fr.mnf.nbapals.nbamodel;
 
 import fr.mnf.nbapals.nbamodel.NBAGame;
 import fr.mnf.nbapals.nbamodel.NBAGamesDay;
 import fr.mnf.nbapals.nbamodel.utils.GameStatus;
-import fr.mnf.nbapals.nbamodel.utils.NBATeams;
+import fr.mnf.nbapals.nbamodel.utils.Teams;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
@@ -41,7 +41,7 @@ public class NBAGamesDayTest {
     
     public NBAGamesDayTest() {
         gamesDay = new NBAGamesDay();
-        game = new NBAGame(null, NBATeams.CHA, NBATeams.ATL, 0, 0, null, null, null, GameStatus.FINAL, null);
+        game = new NBAGame(null, Teams.CHA, Teams.ATL, 0, 0, null, null, null, GameStatus.FINAL, null);
         gamesDay.addGame(game);
     }
     
@@ -94,7 +94,7 @@ public class NBAGamesDayTest {
     @Test
     public void testAddGame() {
         System.out.println("addGame");
-        NBAGame gameTest = new NBAGame(null, NBATeams.CHA, NBATeams.ATL, 10, 20, 
+        NBAGame gameTest = new NBAGame(null, Teams.CHA, Teams.ATL, 10, 20, 
                 null, null, null, GameStatus.FINAL, null);
         NBAGamesDay instance = gamesDay;
         instance.addGame(gameTest);
@@ -110,7 +110,7 @@ public class NBAGamesDayTest {
     @Test
     public void testRemoveGame() {
         System.out.println("removeGame");
-        NBAGame gameTest = new NBAGame(null, NBATeams.CHA, NBATeams.ATL, 15, 35, null,
+        NBAGame gameTest = new NBAGame(null, Teams.CHA, Teams.ATL, 15, 35, null,
                 null, null, GameStatus.FINAL, null);
         NBAGamesDay instance = gamesDay;
         instance.addGame(gameTest);

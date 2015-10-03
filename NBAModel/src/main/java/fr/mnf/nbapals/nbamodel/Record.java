@@ -17,8 +17,6 @@
  */
 package fr.mnf.nbapals.nbamodel;
 
-import fr.mnf.nbapals.nbamodel.NBATeam;
-
 /**
  *
  * @author François_2

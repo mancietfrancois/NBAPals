@@ -21,17 +21,41 @@ package fr.mnf.nbapals.nbamodel.utils;
  *
  * @author François_2
  */
-public enum Division {
-    ATLANTIC("ATLANTIC"),
-    CENTRAL("CENTRAL"),
-    NORTHWEST("NORTHWEST"),    
-    PACIFIC("PACIFIC"),
-    SOUTHEAST("SOUTHEAST"),
-    SOUTHWEST("SOUTHWEST");
-    
+public enum Teams {
+    ATL("ATL"),
+    BKN("BKN"), 
+    BOS("BOS"),
+    CHA("CHA"),
+    CHI("CHI"), 
+    CLE("CLE"),
+    DAL("DAL"),
+    DEN("DEN"),
+    DET("DET"), 
+    GS("GS"),
+    HOU("HOU"),
+    IND("IND"),
+    LAC("LAC"), 
+    LAL("LAL"),
+    MEM("MEM"),
+    MIA("MIA"),
+    MIL("MIL"), 
+    MIN("MIN"),
+    NK("NY"),
+    NO("NO"),
+    OKC("OKC"), 
+    ORL("ORL"),
+    PHI("PHI"),
+    PHX("PHX"), 
+    POR("POR"),
+    SA("SA"),
+    SAC("SAC"),
+    TOR("TOR"), 
+    UTAH("UTAH"),
+    WSH("WSH");  
+   
     private final String value;
 
-    Division(String value) {
+    Teams(String value) {
         this.value = value;
     }
 
@@ -39,14 +63,21 @@ public enum Division {
         return value;
     }
 
-    public static Division fromString(String s) {
-        if (s != null) {
-            for (Division division : Division.values()) {
-                if (s.equalsIgnoreCase(division.value)) {
-                    return division;
-                }
-            }
-        }
-        return null;
+    @Override
+    public String toString() {
+        return this.getValue();
     }
+    
+    public static Teams fromString(String text) {
+    if (text != null) {
+      for (Teams team : Teams.values()) {
+        if (text.equalsIgnoreCase(team.value)) {
+          return team;
+        }
+      }
+    }
+    return null;
+  }
+    
+    
 }

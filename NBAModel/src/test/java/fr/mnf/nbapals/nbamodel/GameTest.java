@@ -15,11 +15,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package fr.mnf.nbapals.test.nbamodel;
+package fr.mnf.nbapals.nbamodel;
 
 import fr.mnf.nbapals.nbamodel.NBAGame;
 import fr.mnf.nbapals.nbamodel.utils.GameStatus;
-import fr.mnf.nbapals.nbamodel.utils.NBATeams;
+import fr.mnf.nbapals.nbamodel.utils.Teams;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -35,8 +35,8 @@ public class GameTest {
     private static final String ID = "CHA_ATL_2015-06-05";
     private static final int HOME_SCORE = 105;
     private static final int AWAY_SCORE = 85;
-    private static final NBATeams HOME_TEAM = NBATeams.ATL;
-    private static final NBATeams AWAY_TEAM = NBATeams.BKN;
+    private static final Teams HOME_TEAM = Teams.ATL;
+    private static final Teams AWAY_TEAM = Teams.BKN;
     private static final String DATE_US = "2015-06-04";
     private static final String DATE_EU = "2015-06-05";
     private static final String TIME = "1:00";
@@ -73,8 +73,8 @@ public class GameTest {
     public void testGetTeamHome() {
         System.out.println("getTeamHome");
         NBAGame instance = game;
-        NBATeams expResult = HOME_TEAM;
-        NBATeams result = instance.getTeamHome();
+        Teams expResult = HOME_TEAM;
+        Teams result = instance.getTeamHome();
         assertEquals(expResult, result);
     }
 
@@ -85,8 +85,8 @@ public class GameTest {
     public void testGetTeamAway() {
         System.out.println("getTeamAway");
         NBAGame instance = game;
-        NBATeams expResult = AWAY_TEAM;
-        NBATeams result = instance.getTeamAway();
+        Teams expResult = AWAY_TEAM;
+        Teams result = instance.getTeamAway();
         assertEquals(expResult, result);
     }
 

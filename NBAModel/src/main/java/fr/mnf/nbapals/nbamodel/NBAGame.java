@@ -19,7 +19,7 @@ package fr.mnf.nbapals.nbamodel;
 
 
 import fr.mnf.nbapals.nbamodel.utils.GameStatus;
-import fr.mnf.nbapals.nbamodel.utils.NBATeams;
+import fr.mnf.nbapals.nbamodel.utils.Teams;
 
 /**
  *
@@ -28,8 +28,8 @@ import fr.mnf.nbapals.nbamodel.utils.NBATeams;
 public class NBAGame {
     
     private final String id;
-    private final NBATeams teamHome;
-    private final NBATeams teamAway;
+    private final Teams teamHome;
+    private final Teams teamAway;
     private int homeScore;
     private int awayScore;
     private final String dateUs;
@@ -38,7 +38,7 @@ public class NBAGame {
     private GameStatus status;
     private final String espnURL;
 
-    public NBAGame(String id, NBATeams teamHome, NBATeams teamAway, int homeScore, 
+    public NBAGame(String id, Teams teamHome, Teams teamAway, int homeScore, 
             int awayScore, String dateUs, String dateEu, String time, 
             GameStatus status, String espnURL) {
         this.teamHome = teamHome;
@@ -53,11 +53,11 @@ public class NBAGame {
         this.id = id;
     }
     
-    public NBATeams getTeamHome() {
+    public Teams getTeamHome() {
         return teamHome;
     }
     
-    public NBATeams getTeamAway() {
+    public Teams getTeamAway() {
         return teamAway;
     }
 

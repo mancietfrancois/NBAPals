@@ -19,7 +19,7 @@ package fr.mnf.nbapals.nbamodel;
 
 import fr.mnf.nbapals.nbamodel.utils.Conference;
 import fr.mnf.nbapals.nbamodel.utils.Division;
-import fr.mnf.nbapals.nbamodel.utils.NBATeams;
+import fr.mnf.nbapals.nbamodel.utils.Teams;
 
 /**
  *
@@ -27,7 +27,7 @@ import fr.mnf.nbapals.nbamodel.utils.NBATeams;
  */
 public class NBATeam {
 
-    private final NBATeams teamId;
+    private final Teams teamId;
     private final Conference conference;
     private final Division division;
 
@@ -45,7 +45,7 @@ public class NBATeam {
     private int playoffWins;
     private int playoffLoss;
 
-    public NBATeam(NBATeams teamId, Conference conference, Division division,
+    public NBATeam(Teams teamId, Conference conference, Division division,
             int wins, int loss, int confWins, int confLoss, int confRanking,
             int divWins, int divLoss, int divRanking, int playoffWins,
             int playoffLoss) {
@@ -121,7 +121,7 @@ public class NBATeam {
         this.divLoss = divLoss;
     }
 
-    public NBATeams getTeamId() {
+    public Teams getTeamId() {
         return teamId;
     }
 

@@ -35,5 +35,20 @@ public class NBADates {
         "20150217",
         "20150218"};
     
-    public static final String PLAYOFFS_2014_2015_FIRST_DAY = "20150418";
+    public static final String REGULAR_SEASON_2015_2016_FIRST_DAY = "20151027";
+    public static final String REGULAR_SEASON_2015_2016_LAST_DAY = "20160414";
+    public static final String[] NO_GAMES_DAY_2015_2016 = new String[]{
+        "20151126",
+        "20151224",
+        "20160212",
+        "20160213",
+        "20160214",
+        "20160215",
+        "20160216",
+        "20160217",
+        "20160404"};
+    
+    public static String REGULAR_SEASON_FIRST_DAY = REGULAR_SEASON_2015_2016_FIRST_DAY;
+    public static String REGULAR_SEASON_LAST_DAY = REGULAR_SEASON_2015_2016_LAST_DAY;
+    public static String[] NO_GAMES_DAY = NO_GAMES_DAY_2015_2016;
 }

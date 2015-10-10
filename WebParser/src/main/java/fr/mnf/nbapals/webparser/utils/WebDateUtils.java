@@ -34,7 +34,7 @@ public class WebDateUtils {
         
     public static boolean checkDateOk(String date) {
         //we check if the date does not belong to the forbidden dates
-        for (String s : NBADates.NO_GAMES_DAY_2014_2015) {
+        for (String s : NBADates.NO_GAMES_DAY) {
             if (s.equals(date)) {
                 return false;
             }
@@ -53,14 +53,14 @@ public class WebDateUtils {
     
     public static List<String> getEspnRegularSeasonDates() {
         List<String> nbaGamesDate = new ArrayList<>();
-        String startingDate = NBADates.REGULAR_SEASON_2014_2015_FIRST_DAY;
+        String startingDate = NBADates.REGULAR_SEASON_FIRST_DAY;
         do {
             
             if (checkDateOk(startingDate)) {
                 nbaGamesDate.add(startingDate);
             }
             startingDate = DatesUtils.addDays(startingDate, 1);
-        } while (!(startingDate).equals(NBADates.REGULAR_SEASON_2014_2015_LAST_DAY));
+        } while (!(startingDate).equals(NBADates.REGULAR_SEASON_LAST_DAY));
         return nbaGamesDate;
     }
 }

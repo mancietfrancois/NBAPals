@@ -48,3 +48,41 @@ CREATE TABLE games (
   CONSTRAINT fk_id_team_home FOREIGN KEY (team_home) REFERENCES nba_team (shortname)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Table structure for table gambler_group
+--
+
+DROP TABLE IF EXISTS gambler_group;
+CREATE TABLE gambler_group (
+  id int NOT NULL AUTO_INCREMENT,
+  group_name varchar(20) NOT NULL UNIQUE,
+  CONSTRAINT pk_id PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table gambler
+--
+
+DROP TABLE IF EXISTS gambler;
+CREATE TABLE gambler (
+  id int NOT NULL AUTO_INCREMENT,
+  name varchar(20) NOT NULL UNIQUE,
+  password varchar(20) NOT NULL,
+  CONSTRAINT pk_id PRIMARY KEY (id, name)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table bets
+--
+
+DROP TABLE IF EXISTS bets;
+CREATE TABLE bets (
+  id varchar(20) NOT NULL,
+  id_game varchar(20) NOT NULL,
+  team_winner varchar(20) NOT NULL,
+  CONSTRAINT pk_id PRIMARY KEY (id),
+  CONSTRAINT fk_id_game FOREIGN KEY (id_game) REFERENCES games (id),
+  CONSTRAINT fk_id_team_winner FOREIGN KEY (team_winner) REFERENCES nba_team (shortname)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+

@@ -39,4 +39,4 @@ nbdist/
 .nb-gradle/
 
 #HTML Cache files
-.html
+*.html

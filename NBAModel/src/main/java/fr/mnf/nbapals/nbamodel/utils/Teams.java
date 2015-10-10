@@ -22,56 +22,68 @@ package fr.mnf.nbapals.nbamodel.utils;
  * @author François_2
  */
 public enum Teams {
-    ATL("ATL"),
-    BKN("BKN"), 
-    BOS("BOS"),
-    CHA("CHA"),
-    CHI("CHI"), 
-    CLE("CLE"),
-    DAL("DAL"),
-    DEN("DEN"),
-    DET("DET"), 
-    GS("GS"),
-    HOU("HOU"),
-    IND("IND"),
-    LAC("LAC"), 
-    LAL("LAL"),
-    MEM("MEM"),
-    MIA("MIA"),
-    MIL("MIL"), 
-    MIN("MIN"),
-    NK("NY"),
-    NO("NO"),
-    OKC("OKC"), 
-    ORL("ORL"),
-    PHI("PHI"),
-    PHX("PHX"), 
-    POR("POR"),
-    SA("SA"),
-    SAC("SAC"),
-    TOR("TOR"), 
-    UTAH("UTAH"),
-    WSH("WSH");  
+    ATL("ATLANTA", "HAWKS", "ATL"),
+    BKN("BROOKLYN", "NETS", "BKN"), 
+    BOS("BOSTON", "CELTICS", "BOS"),
+    CHA("CHARLOTTE", "HORNETS", "CHA"),
+    CHI("CHICAGO", "BULLS", "CHI"), 
+    CLE("CLEVELAND", "CAVALIERS", "CLE"),
+    DAL("DALLAS", "MAVERICKS", "DAL"),
+    DEN("DENVER", "NUGGETS", "DEN"),
+    DET("DETROIT", "PISTONS", "DET"), 
+    GS("GOLDEN STATE", "WARRIORS", "GS"),
+    HOU("HOUSTON", "ROCKETS", "HOU"),
+    IND("INDIANA", "PACERS", "IND"),
+    LAC("LOS ANGELES", "CLIPPERS", "LAC"), 
+    LAL("LOS ANGELES", "LAKERS", "LAL"),
+    MEM("MEMPHIS", "GRIZZLIES", "MEM"),
+    MIA("MIAMI", "HEAT", "MIA"),
+    MIL("MILWAUKEE", "BUCKS", "MIL"), 
+    MIN("MINNESOTA", "TIMBERWOLVES", "MIN"),
+    NO("NEW ORLEANS", "PELICANS", "NO"),
+    NY("NEW YORK", "KNICKS", "NY"),
+    OKC("OKLAHOMA CITY", "THUNDER", "OKC"), 
+    ORL("ORLANDO", "MAGIC", "ORL"),
+    PHI("PHILADELPHIA", "76ERS", "PHI"),
+    PHX("PHOENIX", "SUNS", "PHX"), 
+    POR("PORTLAND", "TRAIL BLAZERS", "POR"),
+    SA("SAN ANTONIO", "SPURS", "SA"),
+    SAC("SACRAMENTO", "KINGS", "SAC"),
+    TOR("TORONTO", "RAPTORS", "TOR"), 
+    UTAH("UTAH", "JAZZ", "UTAH"),
+    WSH("WASHINGTON", "WIZARDS", "WSH");  
    
-    private final String value;
+    private final String city;
+    private final String name;
+    private final String shortname;
 
-    Teams(String value) {
-        this.value = value;
+    Teams(String city, String name, String shortname) {
+        this.city = city;
+        this.name = name;
+        this.shortname = shortname;
     }
 
-    public String getValue() {
-        return value;
+    public String getCity() {
+        return city;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getShortname() {
+        return shortname;
     }
 
     @Override
     public String toString() {
-        return this.getValue();
+        return this.getShortname();
     }
     
     public static Teams fromString(String text) {
     if (text != null) {
       for (Teams team : Teams.values()) {
-        if (text.equalsIgnoreCase(team.value)) {
+        if (text.equalsIgnoreCase(team.shortname)) {
           return team;
         }
       }

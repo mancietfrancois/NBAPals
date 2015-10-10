@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (C) 2015 Francois
  *
  * This program is free software; you can redistribute it and/or
@@ -15,50 +15,48 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package fr.mnf.nbapals.nbamodel;
+package fr.mnf.nbapals.nbamodel.ranking;
+
+import fr.mnf.nbapals.nbamodel.NBA;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  *
- * @author François_2
+ * @author Francois
  */
-public class Record implements Comparable<Record>{
+public class NBARankerTest {
     
-    private float perct;
-    private NBATeam team;
+    public NBARankerTest() {
+    }
+    
+    @BeforeClass
+    public static void setUpClass() {
+    }
+    
+    @AfterClass
+    public static void tearDownClass() {
+    }
+    
+    @Before
+    public void setUp() {
+    }
+    
+    @After
+    public void tearDown() {
+    }
 
-    public Record(float perct, NBATeam team) {
-        this.perct = perct;
-        this.team = team;
+    /**
+     * Test of rankNBA method, of class NBARanker.
+     */
+    @Test
+    public void testRankNBA() {
+        System.out.println("rankNBA");
+        NBA nba = new NBA();
+        nba.populate();
     }
-    
-    public float getPerct() {
-        return perct;
-    }
-
-    public void setPerct(float perct) {
-        this.perct = perct;
-    }
-
-    public NBATeam getTeam() {
-        return team;
-    }
-
-    public void setTeam(NBATeam team) {
-        this.team = team;
-    }   
-    
-    @Override
-    public int compareTo(Record o) {
-        if (this.perct < o.perct) {
-            
-            return 1;
-        } else if (this.perct > o.perct) {
-            return -1;
-        } else {
-            return 0;
-        }
-    }
-    
-    
     
 }

@@ -44,15 +44,12 @@ public class NBATeamTest {
     private static final int DIV_WINS = 12;
     private static final int DIV_LOSS = 2;
     private static final int DIV_RANKING = 4;
-    private static final int PLAYOFF_WINS = 15;
-    private static final int PLAYOFF_LOSS = 22;
     
     private final NBATeam nbaTeam;
     
     public NBATeamTest() {
         nbaTeam = new NBATeam(TEAM, CONF, DIVISION, WINS, LOSS, CONF_WINS, 
-                CONF_LOSS, CONF_RANKING, DIV_WINS, DIV_LOSS, DIV_RANKING, 
-                PLAYOFF_WINS, PLAYOFF_LOSS);
+                CONF_LOSS, CONF_RANKING, DIV_WINS, DIV_LOSS, DIV_RANKING);
     }
     
     @BeforeClass
@@ -372,55 +369,5 @@ public class NBATeamTest {
         instance.setDivRanking(divRanking);
         int result = instance.getDivRanking();
         assertEquals(result, divRanking);
-    }
-
-    /**
-     * Test of getPlayoffWins method, of class NBATeam.
-     */
-    @Test
-    public void testGetPlayoffWins() {
-        System.out.println("getPlayoffWins");
-        NBATeam instance = nbaTeam;
-        int expResult = PLAYOFF_WINS;
-        int result = instance.getPlayoffWins();
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of setPlayoffWins method, of class NBATeam.
-     */
-    @Test
-    public void testSetPlayoffWins() {
-        System.out.println("setPlayoffWins");
-        int playoffWins = PLAYOFF_WINS + 1;
-        NBATeam instance = nbaTeam;
-        instance.setPlayoffWins(playoffWins);
-        int result = instance.getPlayoffWins();
-        assertEquals(result, playoffWins);
-    }
-
-    /**
-     * Test of getPlayoffLoss method, of class NBATeam.
-     */
-    @Test
-    public void testGetPlayoffLoss() {
-        System.out.println("getPlayoffLoss");
-        NBATeam instance = nbaTeam;
-        int expResult = PLAYOFF_LOSS;
-        int result = instance.getPlayoffLoss();
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of setPlayoffLoss method, of class NBATeam.
-     */
-    @Test
-    public void testSetPlayoffLoss() {
-        System.out.println("setPlayoffLoss");
-        int playoffLoss = PLAYOFF_LOSS;
-        NBATeam instance = nbaTeam;
-        instance.setPlayoffLoss(playoffLoss);
-        int result = instance.getPlayoffLoss();
-        assertEquals(result, playoffLoss);
     }
 }

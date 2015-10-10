@@ -38,7 +38,7 @@ public class TeamsTest {
         Teams[] expResult = {Teams.ATL, Teams.BKN, Teams.BOS, Teams.CHA, Teams.CHI,
             Teams.CLE, Teams.DAL, Teams.DEN, Teams.DET, Teams.GS, Teams.HOU,
             Teams.IND, Teams.LAC, Teams.LAL, Teams.MEM, Teams.MIA, Teams.MIL,
-            Teams.MIN, Teams.NK, Teams.NO, Teams.OKC, Teams.ORL, Teams.PHI,
+            Teams.MIN, Teams.NO, Teams.NY, Teams.OKC, Teams.ORL, Teams.PHI,
             Teams.PHX, Teams.POR, Teams.SA, Teams.SAC, Teams.TOR, Teams.UTAH,
             Teams.WSH};
         Teams[] result = Teams.values();
@@ -53,12 +53,12 @@ public class TeamsTest {
         System.out.println("valueOf");
         String [] names = {"ATL", "BKN", "BOS", "CHA", "CHI", "CLE", "DAL", "DEN",
             "DET", "GS", "HOU", "IND", "LAC", "LAL", "MEM", "MIA", "MIL", "MIN",
-            "NO", "OKC", "ORL", "PHI", "PHX", "POR", "SA", "SAC", "TOR", 
+            "NO", "NY", "OKC", "ORL", "PHI", "PHX", "POR", "SA", "SAC", "TOR", 
             "UTAH", "WSH"};
         Teams [] expResults = {Teams.ATL, Teams.BKN, Teams.BOS, Teams.CHA, Teams.CHI,
             Teams.CLE, Teams.DAL, Teams.DEN, Teams.DET, Teams.GS, Teams.HOU,
             Teams.IND, Teams.LAC, Teams.LAL, Teams.MEM, Teams.MIA, Teams.MIL,
-            Teams.MIN, Teams.NO, Teams.OKC, Teams.ORL, Teams.PHI,
+            Teams.MIN, Teams.NO, Teams.NY, Teams.OKC, Teams.ORL, Teams.PHI,
             Teams.PHX, Teams.POR, Teams.SA, Teams.SAC, Teams.TOR, Teams.UTAH,
             Teams.WSH};
         for(int i = 0; i < names.length; i++) {
@@ -76,15 +76,15 @@ public class TeamsTest {
         Teams [] instances = {Teams.ATL, Teams.BKN, Teams.BOS, Teams.CHA, Teams.CHI,
             Teams.CLE, Teams.DAL, Teams.DEN, Teams.DET, Teams.GS, Teams.HOU,
             Teams.IND, Teams.LAC, Teams.LAL, Teams.MEM, Teams.MIA, Teams.MIL,
-            Teams.MIN, Teams.NK, Teams.NO, Teams.OKC, Teams.ORL, Teams.PHI,
+            Teams.MIN, Teams.NO, Teams.NY, Teams.OKC, Teams.ORL, Teams.PHI,
             Teams.PHX, Teams.POR, Teams.SA, Teams.SAC, Teams.TOR, Teams.UTAH,
             Teams.WSH};
         String [] expResults = {"ATL", "BKN", "BOS", "CHA", "CHI", "CLE", "DAL", "DEN",
             "DET", "GS", "HOU", "IND", "LAC", "LAL", "MEM", "MIA", "MIL", "MIN",
-            "NY", "NO", "OKC", "ORL", "PHI", "PHX", "POR", "SA", "SAC", "TOR", 
+            "NO", "NY", "OKC", "ORL", "PHI", "PHX", "POR", "SA", "SAC", "TOR", 
             "UTAH", "WSH"};
         for(int i = 0; i < instances.length; i++) {
-            String result = instances[i].getValue();
+            String result = instances[i].getShortname();
             assertEquals(expResults[i], result);
         }
     }
@@ -98,12 +98,12 @@ public class TeamsTest {
         Teams [] instances = {Teams.ATL, Teams.BKN, Teams.BOS, Teams.CHA, Teams.CHI,
             Teams.CLE, Teams.DAL, Teams.DEN, Teams.DET, Teams.GS, Teams.HOU,
             Teams.IND, Teams.LAC, Teams.LAL, Teams.MEM, Teams.MIA, Teams.MIL,
-            Teams.MIN, Teams.NK, Teams.NO, Teams.OKC, Teams.ORL, Teams.PHI,
+            Teams.MIN, Teams.NO, Teams.NY, Teams.OKC, Teams.ORL, Teams.PHI,
             Teams.PHX, Teams.POR, Teams.SA, Teams.SAC, Teams.TOR, Teams.UTAH,
             Teams.WSH};
         String [] expResults = {"ATL", "BKN", "BOS", "CHA", "CHI", "CLE", "DAL", "DEN",
             "DET", "GS", "HOU", "IND", "LAC", "LAL", "MEM", "MIA", "MIL", "MIN",
-            "NY", "NO", "OKC", "ORL", "PHI", "PHX", "POR", "SA", "SAC", "TOR", 
+            "NO", "NY", "OKC", "ORL", "PHI", "PHX", "POR", "SA", "SAC", "TOR", 
             "UTAH", "WSH"};
         for(int i = 0; i < instances.length; i++) {
             String result = instances[i].toString();
@@ -119,12 +119,12 @@ public class TeamsTest {
         System.out.println("fromString");
         String [] texts = {"ATL", "BKN", "BOS", "CHA", "CHI", "CLE", "DAL", "DEN",
             "DET", "GS", "HOU", "IND", "LAC", "LAL", "MEM", "MIA", "MIL", "MIN",
-            "NY", "NO", "OKC", "ORL", "PHI", "PHX", "POR", "SA", "SAC", "TOR", 
+            "NO", "NY", "OKC", "ORL", "PHI", "PHX", "POR", "SA", "SAC", "TOR", 
             "UTAH", "WSH", "", null};
         Teams [] expResults = {Teams.ATL, Teams.BKN, Teams.BOS, Teams.CHA, Teams.CHI,
             Teams.CLE, Teams.DAL, Teams.DEN, Teams.DET, Teams.GS, Teams.HOU,
             Teams.IND, Teams.LAC, Teams.LAL, Teams.MEM, Teams.MIA, Teams.MIL,
-            Teams.MIN, Teams.NK, Teams.NO, Teams.OKC, Teams.ORL, Teams.PHI,
+            Teams.MIN, Teams.NO, Teams.NY, Teams.OKC, Teams.ORL, Teams.PHI,
             Teams.PHX, Teams.POR, Teams.SA, Teams.SAC, Teams.TOR, Teams.UTAH,
             Teams.WSH, null, null};
         for(int i = 0; i < texts.length; i++) {

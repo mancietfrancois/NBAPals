@@ -41,14 +41,10 @@ public class NBATeam {
     private int divWins;
     private int divLoss;
     private int divRanking;
-    
-    private int playoffWins;
-    private int playoffLoss;
 
     public NBATeam(Teams teamId, Conference conference, Division division,
             int wins, int loss, int confWins, int confLoss, int confRanking,
-            int divWins, int divLoss, int divRanking, int playoffWins,
-            int playoffLoss) {
+            int divWins, int divLoss, int divRanking) {
 
         this.teamId = teamId;
         this.conference = conference;
@@ -61,8 +57,6 @@ public class NBATeam {
         this.divWins = divWins;
         this.divLoss = divLoss;
         this.divRanking = divRanking;
-        this.playoffLoss = playoffLoss;
-        this.playoffWins = playoffWins;
     }
 
     public Conference getConference() {
@@ -163,21 +157,5 @@ public class NBATeam {
 
     public void setDivRanking(int divRanking) {
         this.divRanking = divRanking;
-    }
-
-    public int getPlayoffWins() {
-        return playoffWins;
-    }
-
-    public void setPlayoffWins(int playoffWins) {
-        this.playoffWins = playoffWins;
-    }
-
-    public int getPlayoffLoss() {
-        return playoffLoss;
-    }
-
-    public void setPlayoffLoss(int playoffLoss) {
-        this.playoffLoss = playoffLoss;
     }
 }

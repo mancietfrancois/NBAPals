@@ -15,8 +15,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package fr.mnf.nbapals.nbamodel;
+package fr.mnf.nbapals.nbamodel.ranking;
 
+import fr.mnf.nbapals.nbamodel.NBA;
+import fr.mnf.nbapals.nbamodel.NBAGame;
+import fr.mnf.nbapals.nbamodel.NBATeam;
 import java.util.List;
 
 /**
@@ -26,11 +29,19 @@ import java.util.List;
 public class Score {
 
     public static float getWinningPercentage(NBATeam team) {
+        //Avoid division by 0
+        if (team.getWins() == 0 && team.getLoss() == 0) {
+            return 0.f;
+        }
         return (float) team.getWins() / (team.getLoss() + team.getWins())
                 * 100;
     }
     
     public static float getDivWinningPercentage(NBATeam team) {
+        //Avoid division by 0
+        if (team.getDivWins() == 0 && team.getDivLoss() == 0) {
+            return 0;
+        }
         return (float) team.getDivWins() / (team.getDivLoss() 
                 + team.getDivWins()) * 100;
     }
@@ -88,10 +99,18 @@ public class Score {
                 teamWins++;
             }
         }
+        //Avoid division by 0
+        if (teamWins == 0 && teamLoss == 0) {
+            return 0.f;
+        }
         return (float) teamWins / (teamWins + teamLoss) * 100;
     }
 
     public static float getConfWinningPercentage(NBATeam team) {
+        //Avoid division by 0
+        if (team.getConfWins() == 0 && team.getConfLoss() == 0) {
+            return 0.f;
+        }
         return (float) team.getConfWins() / (team.getConfLoss() 
                 + team.getConfWins()) * 100;
     }

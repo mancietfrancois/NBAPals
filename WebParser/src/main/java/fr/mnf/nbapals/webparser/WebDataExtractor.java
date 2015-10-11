@@ -65,7 +65,7 @@ public class WebDataExtractor {
 //         = e.text();
         jsonText = jsonText.split("window.espn.scoreboardData 	=")[1];
         jsonText = jsonText.replace(";if(!window.espn_ui.device.isMobile){window.espn.loadType = \"ready\"};", "");
-        System.out.println(jsonText);
+        //System.out.println(jsonText);
         jsonObj = new JSONObject(jsonText);
         JSONArray events = jsonObj.getJSONArray("events");
         if (events.length() == 0) {

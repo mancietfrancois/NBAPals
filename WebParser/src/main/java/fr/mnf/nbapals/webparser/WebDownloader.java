@@ -34,9 +34,9 @@ public class WebDownloader {
 
     private static final int LIMIT_OF_TRIES = 10;
 
-    public static Document download(String dateCode)
+    public static Document download(String dateCode, String [] noGamesDay)
             throws WebDownloaderException, IOException {
-        if (!WebDateUtils.checkDateOk(dateCode)) {
+        if (!WebDateUtils.checkDateOk(dateCode, noGamesDay)) {
             throw new WebDownloaderException("Date not in a valid format! "
                     + "Must be " + WebParserUtils.ESPN_DATE_FORMAT);
         }

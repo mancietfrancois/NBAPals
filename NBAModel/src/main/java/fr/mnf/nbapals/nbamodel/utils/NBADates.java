@@ -22,6 +22,46 @@ package fr.mnf.nbapals.nbamodel.utils;
  * @author François_2
  */
 public class NBADates {
+    
+    public static final String REGULAR_SEASON_2010_2011_FIRST_DAY = "20101026";
+    public static final String REGULAR_SEASON_2010_2011_LAST_DAY = "20110414";
+    public static final String[] NO_GAMES_DAY_2010_2011 = new String[]{
+        "20101224",
+        "20110218",
+        "20110219",
+        "20110220",
+        "20110221",
+        "20110404"};
+    
+    public static final String REGULAR_SEASON_2011_2012_FIRST_DAY = "20111225";
+    public static final String REGULAR_SEASON_2011_2012_LAST_DAY = "20120427";
+    public static final String[] NO_GAMES_DAY_2011_2012 = new String[]{
+        "20120224",
+        "20120225",
+        "20120226",
+        "20120227"};
+    
+    public static final String REGULAR_SEASON_2012_2013_FIRST_DAY = "20121030";
+    public static final String REGULAR_SEASON_2012_2013_LAST_DAY = "20130418";
+    public static final String[] NO_GAMES_DAY_2012_2013 = new String[]{
+        "20121122",
+        "20121224",
+        "20130215",
+        "20130216",
+        "20130217",
+        "20130218",
+        "20130408"};
+    
+    public static final String REGULAR_SEASON_2013_2014_FIRST_DAY = "20131029";
+    public static final String REGULAR_SEASON_2013_2014_LAST_DAY = "20140417";
+    public static final String[] NO_GAMES_DAY_2013_2014 = new String[]{
+        "20131128",
+        "20131224",
+        "20140214",
+        "20140215",
+        "20140216",
+        "20140217",
+        "20140407"};
 
     public static final String REGULAR_SEASON_2014_2015_FIRST_DAY = "20141028";
     public static final String REGULAR_SEASON_2014_2015_LAST_DAY = "20150416";

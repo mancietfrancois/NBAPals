@@ -18,6 +18,7 @@
 package fr.mnf.nbapals.nbamodel;
 
 
+import fr.mnf.nbapals.nbamodel.archieves.NBAArchieveTeam;
 import fr.mnf.nbapals.nbamodel.utils.Conference;
 import fr.mnf.nbapals.nbamodel.utils.Division;
 import static fr.mnf.nbapals.nbamodel.utils.Division.ATLANTIC;
@@ -328,6 +329,17 @@ public class NBA {
         List<NBATeam> teams = new ArrayList<>();
         teams.addAll(west);
         teams.addAll(east);
+        return teams;
+    }
+    
+    public List<NBAArchieveTeam> getNBAArchieveTeams() {
+        List<NBAArchieveTeam> teams = new ArrayList<>();
+        for(NBATeam team : west) {
+            teams.add((NBAArchieveTeam) team);
+        }
+        for(NBATeam team : east) {
+            teams.add((NBAArchieveTeam) team);
+        }
         return teams;
     }
 

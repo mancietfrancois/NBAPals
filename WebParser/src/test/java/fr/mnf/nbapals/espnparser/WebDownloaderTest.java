@@ -8,10 +8,6 @@ package fr.mnf.nbapals.espnparser;
 import fr.mnf.nbapals.webparser.WebDownloader;
 import fr.mnf.nbapals.nbamodel.utils.NBADates;
 import org.jsoup.nodes.Document;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -28,6 +24,6 @@ public class WebDownloaderTest {
         System.out.println("download");
         String dateCode = NBADates.REGULAR_SEASON_FIRST_DAY;
         Document expResult = null;
-        Document result = WebDownloader.download(dateCode);
+        Document result = WebDownloader.download(dateCode, NBADates.NO_GAMES_DAY);
     }    
 }

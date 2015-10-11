@@ -32,9 +32,9 @@ import java.util.logging.Logger;
  */
 public class WebDateUtils {
         
-    public static boolean checkDateOk(String date) {
+    public static boolean checkDateOk(String date, String [] noGamesDay) {
         //we check if the date does not belong to the forbidden dates
-        for (String s : NBADates.NO_GAMES_DAY) {
+        for (String s : noGamesDay) {
             if (s.equals(date)) {
                 return false;
             }
@@ -51,16 +51,17 @@ public class WebDateUtils {
         return true;
     }
     
-    public static List<String> getEspnRegularSeasonDates() {
+    public static List<String> getEspnRegularSeasonDates(String firstDay, 
+            String lastDay, String [] noGamesDay) {
         List<String> nbaGamesDate = new ArrayList<>();
-        String startingDate = NBADates.REGULAR_SEASON_FIRST_DAY;
+        String startingDate = firstDay;
         do {
             
-            if (checkDateOk(startingDate)) {
+            if (checkDateOk(startingDate, noGamesDay)) {
                 nbaGamesDate.add(startingDate);
             }
             startingDate = DatesUtils.addDays(startingDate, 1);
-        } while (!(startingDate).equals(NBADates.REGULAR_SEASON_LAST_DAY));
+        } while (!(startingDate).equals(lastDay));
         return nbaGamesDate;
     }
 }

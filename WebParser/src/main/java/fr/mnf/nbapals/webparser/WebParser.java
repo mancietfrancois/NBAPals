@@ -45,14 +45,16 @@ public class WebParser {
     private NBAGamesDay gameDay;
 
     private String date;
+    private String [] noGamesDay;
 
-    public WebParser(String date) {
+    public WebParser(String date, String [] noGamesDay) {
         this.date = date;
+        this.noGamesDay = noGamesDay;
     }
 
     public NBAGamesDay parse() {
         try {
-            doc = WebDownloader.download(this.date);
+            doc = WebDownloader.download(this.date, noGamesDay);
             WebDataExtractor dataExtractor = new WebDataExtractor(doc);
             dataEvents = dataExtractor.extractDataEvents();
             this.gameDay = extractEvents();
@@ -114,6 +116,9 @@ public class WebParser {
             String abbreviation = competitor.getJSONObject("team")
                     .getString("abbreviation");
             String homeAway = competitor.getString("homeAway");
+            if (abbreviation.equals("NJ")) {
+                abbreviation = "BKN";
+            }
             switch (homeAway) {
                 case "home":
                     tempGame.setHomeScore(score);

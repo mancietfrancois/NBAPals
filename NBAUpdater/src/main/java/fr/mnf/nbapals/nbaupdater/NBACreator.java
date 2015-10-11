@@ -22,6 +22,7 @@ import fr.mnf.nbapals.webparser.utils.WebDateUtils;
 import fr.mnf.nbapals.nbamodel.NBA;
 import fr.mnf.nbapals.nbamodel.NBAGamesDay;
 import fr.mnf.nbapals.nbamodel.ranking.NBARanker;
+import fr.mnf.nbapals.nbamodel.utils.NBADates;
 import fr.mnf.nbapals.nbapalsdao.NBAPalsDAO;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,10 +41,12 @@ public class NBACreator {
     }
     
     public void populate() {
-        List<String> nbaDates = WebDateUtils.getEspnRegularSeasonDates();
+        List<String> nbaDates = WebDateUtils.getEspnRegularSeasonDates(
+                NBADates.REGULAR_SEASON_FIRST_DAY, 
+                NBADates.REGULAR_SEASON_LAST_DAY, NBADates.NO_GAMES_DAY);
         List<NBAGamesDay> gamesDay = new ArrayList<>();
         for (String date : nbaDates) {
-            WebParser espnParser = new WebParser(date);
+            WebParser espnParser = new WebParser(date, NBADates.NO_GAMES_DAY);
             espnParser.parse();
             gamesDay.add(espnParser.getGameDay());
         }

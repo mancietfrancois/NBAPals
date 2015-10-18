@@ -64,7 +64,7 @@ public class NBAPalsDAOTest {
     public void testGetNBATeams() {
         System.out.println("getNBATeams");
         List<NBATeam> result = NBAPalsDAO.getNBATeams();
-        assertTrue(result.size() == 0);
+        assertTrue(result.size() == 30);
     }
 
     /**
@@ -93,13 +93,13 @@ public class NBAPalsDAOTest {
     @Test
     public void testInsertGame() {
         System.out.println("insertGame");
-        NBAGame game = new NBAGame("FAKEIDFORTEST", Teams.CHA, Teams.ATL, 120, 88, "2015-04-15", "2015-04-16", "test", GameStatus.FINAL, "http://scores.espn.go.com/nba/scoreboard?date=20150411");
-        boolean expResult = true;
-        try {
-            NBAPalsDAO.insertGame(game, NBAPalsDAO.createConnection());
-        } catch (Exception ex) {
-            Logger.getLogger(NBAPalsDAOTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        NBAGame game = new NBAGame("FAKEIDFORTEST", Teams.CHA, Teams.ATL, 120, 88, "2015-04-15", "2015-04-16", "test", GameStatus.FINAL, "http://scores.espn.go.com/nba/scoreboard?date=20150411");
+//        boolean expResult = true;
+//        try {
+//            NBAPalsDAO.insertGame(game, NBAPalsDAO.createConnection());
+//        } catch (Exception ex) {
+//            Logger.getLogger(NBAPalsDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     /**

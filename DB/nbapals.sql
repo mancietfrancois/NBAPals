@@ -56,6 +56,7 @@ DROP TABLE IF EXISTS gambler_group;
 CREATE TABLE gambler_group (
   id int NOT NULL AUTO_INCREMENT,
   group_name varchar(20) NOT NULL UNIQUE,
+  password varchar(20) NOT NULL,
   CONSTRAINT pk_id PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -68,7 +69,7 @@ CREATE TABLE gambler (
   id int NOT NULL AUTO_INCREMENT,
   name varchar(20) NOT NULL UNIQUE,
   password varchar(20) NOT NULL,
-  CONSTRAINT pk_id PRIMARY KEY (id, name)
+  CONSTRAINT pk_id PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --

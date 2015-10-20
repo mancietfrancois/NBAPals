@@ -20,6 +20,7 @@ package fr.mnf.nbapals.nbapalsdao.bets;
 import fr.mnf.nbapals.nbapalsdao.NBAPalsDAO;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
@@ -77,6 +78,24 @@ public class NBAPalsBetDAO {
             insertStatus = true;
         }
         return insertStatus;
+    }
+    
+    public static boolean checkGamblerExists(String name, String password) 
+            throws SQLException, Exception {
+        boolean selectStatus = false;
+        Connection dbConn = createConnection();
+        Statement stmt = dbConn.createStatement();
+        String query = "SELECT * FROM " + DB_NAME + "."
+                + TABLE_GAMBLER_NAME + " WHERE name LIKE '" + name + 
+                "' LIKE AND password LIKE '" + password + "';";
+        System.out.println(query);
+        ResultSet res = stmt.executeQuery(query);
+        //we move to the first row
+        res.next();
+        if (!res.next()) {
+            selectStatus = true;
+        }
+        return selectStatus;
     }
 
     public static boolean registerGroup(String name, String password,

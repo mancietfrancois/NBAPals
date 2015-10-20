@@ -5,13 +5,19 @@
     <!-- Strings related to login -->
     <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
+    <string name="prompt_repeated_password">Repeat password</string>
+
     <string name="btn_sign_in">Sign in</string>
+    <string name="btn_sign_up">Sign up</string>
 
     <string name="link_sign_up"><u>Not registered yet? Sign up</u></string>
+    <string name="link_sign_in"><u>Already registered? Sign in</u></string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
+    <!--<string name="error_invalid_password">This password is too short</string>-->
+    <string name="error_forbidden_char_password">This password is too small (less than 6 characters) or contains fordibben characters. Use only alphanumerical characters</string>
+    <string name="error_confirmed_password">Passwords not similar</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
 </resources>

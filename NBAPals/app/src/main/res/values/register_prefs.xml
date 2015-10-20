@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="register_prefs_key">fr.mnf.nbapals.register.PREF_KEY</string>
+
+    <string name="register_prefs_username_active">register_prefs_username_active</string>
+    <string name="register_prefs_password_active">register_prefs_password_active</string>
+    <string name="register_prefs_username_values">register_prefs_username_values</string>
+</resources>

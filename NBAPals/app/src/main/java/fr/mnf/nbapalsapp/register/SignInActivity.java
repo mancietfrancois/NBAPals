@@ -22,18 +22,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
-
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import cz.msebera.android.httpclient.Header;
 import fr.mnf.nbapalsapp.R;
+import fr.mnf.nbapalsapp.register.utils.AlertUtilities;
 
 /**
  * A login screen that offers login via email/password.
@@ -47,7 +43,7 @@ public class SignInActivity extends AppCompatActivity {
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
+    private RegisterClientTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mUsernameView;
@@ -180,12 +176,66 @@ public class SignInActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(username, password);
-            mAuthTask.invokeWS();
+            mAuthTask = new RegisterClientTask(username, password, "dosignin", new RegisterClientInterface() {
+                @Override
+                public void onInvokeSuccess(String response) {
+                    onSigninSuccess(response);
+                }
+
+                @Override
+                public void onInvokeFailed(String response) {
+                    onSigninFailed(response);
+                }
+            });
+            mAuthTask.invokeWS(getApplicationContext());
         }
     }
 
+    private void onSigninSuccess(String serverResponse) {
+        showProgress(false);
+        try {
+            JSONObject response = new JSONObject(serverResponse);
+            boolean status = response.getBoolean("status");
+            if (status) {
+                //TODO start the main menu
+                saveCredentials();
+                finish();
+            }
+            if (response.getString("message") != null) {
+                mUsernameView.setError(response.getString("message"));
+                mUsernameView.requestFocus();
+                mAuthTask = null;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void onSigninFailed(String serverResponse) {
+        mAuthTask = null;
+        showProgress(false);
+        String message;
+        String title = getString(R.string.title_internet);
+        switch (serverResponse) {
+            case RegisterClientTask.ERR_NO_INTERNET: {
+                message = getString(R.string.internet_no_internet);
+                break;
+            }
+            case RegisterClientTask.ERR_NO_WIFI: {
+                message = getString(R.string.internet_no_wi_fi);
+                break;
+            }
+            case RegisterClientTask.ERR_NBAPALS_UNREACHABLE: {
+                message = getString(R.string.internet_service_offline);
+                break;
+            }
+            default: {
+                message = getString(R.string.internet_unknown_exception);
+                break;
+            }
+        }
+        AlertUtilities.displayAlert(message, title, this);
+    }
 
     /**
      * Shows the progress UI and hides the login form.
@@ -242,65 +292,6 @@ public class SignInActivity extends AppCompatActivity {
                         mPasswordView.getText().toString())
                 .putStringSet(getString(R.string.register_prefs_username_values), usernames)
                 .commit();
-    }
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncHttpClient {
-
-        private final String mUsername;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            super();
-            mUsername = email;
-            mPassword = password;
-        }
-
-
-        public void invokeWS() {
-            showProgress(true);
-            RequestParams params = new RequestParams();
-            params.put("name", mUsername);
-            params.put("password", mPassword);
-            // Make RESTful webservice call using AsyncHttpClient object
-            Log.i("WSInvoker", "Call : http://192.168.1.18:8080/NBAPalsJersey/ws/register/dosignin?name="
-                    + mUsername + "&password=" + mPassword);
-            this.get("http://192.168.1.18:8080/NBAPalsJersey/ws/register/dosignin?", params, new TextHttpResponseHandler() {
-                @Override
-                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    Log.i("WSResponse", "Server response: " + responseString);
-                    mAuthTask = null;
-                    showProgress(false);
-                    mPasswordView.setError(getString(R.string.error_incorrect_password));
-                    mPasswordView.requestFocus();
-                }
-
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                    // Extract JSON Object from JSON returned by REST WS
-                    // When the JSON response has status boolean value set to true
-                    Log.i("WSResponse", "Server response: " + responseString);
-                    try {
-                        JSONObject response = new JSONObject(responseString);
-                        boolean status = response.getBoolean("status");
-                        if (!status) {
-                            if (response.getString("message") != null) {
-                                Log.i("LOG", response.getString("message") + "");
-                            }
-                        } else {
-                            showProgress(false);
-                            saveCredentials();
-                            finish();
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }
     }
 }
 

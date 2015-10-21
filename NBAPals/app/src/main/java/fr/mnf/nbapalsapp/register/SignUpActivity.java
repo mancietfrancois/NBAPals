@@ -15,34 +15,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
-
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import cz.msebera.android.httpclient.Header;
 import fr.mnf.nbapalsapp.R;
+import fr.mnf.nbapalsapp.register.utils.AlertUtilities;
 
 public class SignUpActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "SIGN_UP";
 
     /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
+    private RegisterClientTask mAuthTask = null;
 
     // UI references.
     private EditText mUsernameView;
@@ -51,6 +40,8 @@ public class SignUpActivity extends AppCompatActivity {
     private TextView mLinkSignIn;
     private View mProgressView;
     private View mLoginFormView;
+
+    // Shared
     private SharedPreferences mSharedPreferences;
 
     @Override
@@ -87,11 +78,6 @@ public class SignUpActivity extends AppCompatActivity {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     /**
@@ -161,9 +147,74 @@ public class SignUpActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(username, password);
-            mAuthTask.invokeWS();
+            mAuthTask = new RegisterClientTask(username, password, "dosignup",
+                    new RegisterClientInterface() {
+                @Override
+                public void onInvokeSuccess(String response) {
+                    onSignupSuccess(response);
+                }
+
+                @Override
+                public void onInvokeFailed(String response) {
+                    onSignupFailed(response);
+                }
+            });
+            mAuthTask.invokeWS(getApplicationContext());
         }
+    }
+
+    /**
+     * Called when a response is received from the service
+     * @param serverResponse
+     */
+    private void onSignupSuccess(String serverResponse) {
+        showProgress(false);
+        try {
+            JSONObject response = new JSONObject(serverResponse);
+            boolean status = response.getBoolean("status");
+            if (status) {
+                saveCredentials();
+                finish();
+            }
+            if (response.getString("message") != null) {
+                mUsernameView.setError(response.getString("message"));
+                mUsernameView.requestFocus();
+                mAuthTask = null;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Called when the server gives no response. Typically if an web connection is not allowed,
+     * or if the service is not connected.
+     * @param serverResponse
+     */
+    private void onSignupFailed(String serverResponse) {
+        mAuthTask = null;
+        showProgress(false);
+        String message;
+        String title = getString(R.string.title_internet);
+        switch (serverResponse) {
+            case RegisterClientTask.ERR_NO_INTERNET: {
+                message = getString(R.string.internet_no_internet);
+                break;
+            }
+            case RegisterClientTask.ERR_NO_WIFI: {
+                message = getString(R.string.internet_no_wi_fi);
+                break;
+            }
+            case RegisterClientTask.ERR_NBAPALS_UNREACHABLE: {
+                message = getString(R.string.internet_service_offline);
+                break;
+            }
+            default: {
+                message = getString(R.string.internet_unknown_exception);
+                break;
+            }
+        }
+        AlertUtilities.displayAlert(message, title, this);
     }
 
     /**
@@ -175,10 +226,11 @@ public class SignUpActivity extends AppCompatActivity {
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+            Log.d(LOG_TAG, "Animation Available");
+            int longAnimTime = getResources().getInteger(android.R.integer.config_longAnimTime);
 
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+            mLoginFormView.animate().setDuration(longAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -187,7 +239,7 @@ public class SignUpActivity extends AppCompatActivity {
             });
 
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
+            mProgressView.animate().setDuration(longAnimTime).alpha(
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -214,64 +266,5 @@ public class SignUpActivity extends AppCompatActivity {
                         mPasswordView.getText().toString())
                 .putStringSet(getString(R.string.register_prefs_username_values), usernames)
                 .commit();
-    }
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncHttpClient {
-
-        private final String mUsername;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            super();
-            mUsername = email;
-            mPassword = password;
-        }
-
-
-        public void invokeWS() {
-            showProgress(true);
-            RequestParams params = new RequestParams();
-            params.put("name", mUsername);
-            params.put("password", mPassword);
-            // Make RESTful webservice call using AsyncHttpClient object
-            Log.i("WSInvoker", "Call : http://192.168.1.18:8080/NBAPalsJersey/ws/register/dosignup?name="
-                    + mUsername + "&password=" + mPassword);
-            this.get("http://192.168.1.18:8080/NBAPalsJersey/ws/register/dosignup?", params, new TextHttpResponseHandler() {
-                @Override
-                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    Log.i("WSResponse", "Server response failure: " + responseString);
-                    mAuthTask = null;
-                    showProgress(false);
-                }
-
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                    // Extract JSON Object from JSON returned by REST WS
-                    // When the JSON response has status boolean value set to true
-                    Log.i("WSResponse", "Server response success: " + responseString);
-                    showProgress(false);
-                    try {
-                        JSONObject response = new JSONObject(responseString);
-                        boolean status = response.getBoolean("status");
-                        if (!status) {
-                            if (response.getString("message") != null) {
-                                mUsernameView.setError(response.getString("message"));
-                                mUsernameView.requestFocus();
-                                mAuthTask = null;
-                            }
-                        } else {
-                            saveCredentials();
-                            finish();
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }
     }
 }

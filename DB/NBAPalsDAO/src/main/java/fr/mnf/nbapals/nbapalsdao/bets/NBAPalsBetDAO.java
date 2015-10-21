@@ -72,30 +72,25 @@ public class NBAPalsBetDAO {
 
         System.out.println(query);
         int records = stmt.executeUpdate(query);
-            // System.out.println(records);
+        // System.out.println(records);
         // When record is successfully inserted
         if (records > 0) {
             insertStatus = true;
         }
         return insertStatus;
     }
-    
-    public static boolean checkGamblerExists(String name, String password) 
+
+    public static boolean checkGamblerExists(String name, String password)
             throws SQLException, Exception {
-        boolean selectStatus = false;
         Connection dbConn = createConnection();
         Statement stmt = dbConn.createStatement();
         String query = "SELECT * FROM " + DB_NAME + "."
-                + TABLE_GAMBLER_NAME + " WHERE name LIKE '" + name + 
-                "' LIKE AND password LIKE '" + password + "';";
+                + TABLE_GAMBLER_NAME + " WHERE name LIKE '" + name
+                + "' AND password LIKE '" + password + "';";
         System.out.println(query);
         ResultSet res = stmt.executeQuery(query);
-        //we move to the first row
-        res.next();
-        if (!res.next()) {
-            selectStatus = true;
-        }
-        return selectStatus;
+        boolean exist = res.next();
+        return exist;
     }
 
     public static boolean registerGroup(String name, String password,

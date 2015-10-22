@@ -5,6 +5,7 @@
  */
 package fr.mnf.nbpals.jersey;
 
+import fr.mnf.nbapals.nbapalsdao.bets.Encryptor;
 import fr.mnf.nbapals.nbapalsdao.bets.NBAPalsBetDAO;
 import fr.mnf.nbpals.jersey.json.JSONMaker;
 import java.sql.SQLException;
@@ -79,8 +80,11 @@ public class Register {
         
         System.out.println("Name = " + name);
         System.out.println("Password = " + password);
+        String decryptedPassword = Encryptor.decrypt("Bar12345Bar12345", "ThisisASecretKey", password);
+        System.out.println("Decrypted password : " + decryptedPassword);
+        
         String response = "";
-        int retCode = signInUser(name, password);
+        int retCode = signInUser(name, decryptedPassword);
         System.out.println("Return Code : " + retCode);
         switch (retCode) {
             case CODE_CHAR_ERROR : {

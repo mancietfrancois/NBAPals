@@ -8,6 +8,7 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import cz.msebera.android.httpclient.Header;
+import fr.mnf.nbapalsapp.register.utils.Encryptor;
 import fr.mnf.nbapalsapp.register.utils.InternetUtils;
 
 /**
@@ -58,11 +59,12 @@ public class RegisterClientTask extends AsyncHttpClient {
     private void connect() {
         Log.d(LOG_TAG, "Network is available");
         RequestParams params = new RequestParams();
+        String encryptedPassword = Encryptor.encrypt("Bar12345Bar12345", "ThisisASecretKey", mPassword);
         params.put("name", mUsername);
-        params.put("password", mPassword);
+        params.put("password", encryptedPassword);
         // Make RESTful webservice call using AsyncHttpClient object
         Log.d(LOG_TAG, "Call : " + WS_REGISTER_PATH + mMethod + "?name=" + mUsername +
-                "&password=" + mPassword);
+                "&password=" + encryptedPassword);
         this.get(WS_REGISTER_PATH + mMethod +"?", params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {

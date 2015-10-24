@@ -1,4 +1,4 @@
-package fr.mnf.nbapalsapp.register;
+package fr.mnf.nbapalsapp.logic.register;
 
 import android.content.Context;
 import android.util.Log;
@@ -8,15 +8,17 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import cz.msebera.android.httpclient.Header;
-import fr.mnf.nbapalsapp.register.utils.Encryptor;
-import fr.mnf.nbapalsapp.register.utils.InternetUtils;
+import fr.mnf.nbapalsapp.logic.utils.InternetUtils;
 
 /**
  * Created by Francois on 21/10/2015.
  */
 public class RegisterClientTask extends AsyncHttpClient {
 
-    public static final String WS_REGISTER_PATH = "http://192.168.1.18:8080/NBAPalsJersey/ws/register/";
+    /*public static final String IP_ADDRESS = "http://192.168.1.18:8080/";*/
+    public static final String IP_ADDRESS = "http://10.0.0.20:8080/";
+    public static final String WS_PATH = IP_ADDRESS + "NBAPalsJersey/ws/";
+
     public static final String LOG_TAG = "RegisterClientTask";
 
     public static final String ERR_NO_WIFI = "EER_NO_WIFI";
@@ -59,13 +61,12 @@ public class RegisterClientTask extends AsyncHttpClient {
     private void connect() {
         Log.d(LOG_TAG, "Network is available");
         RequestParams params = new RequestParams();
-        String encryptedPassword = Encryptor.encrypt("Bar12345Bar12345", "ThisisASecretKey", mPassword);
         params.put("name", mUsername);
-        params.put("password", encryptedPassword);
+        params.put("password", mPassword);
         // Make RESTful webservice call using AsyncHttpClient object
-        Log.d(LOG_TAG, "Call : " + WS_REGISTER_PATH + mMethod + "?name=" + mUsername +
-                "&password=" + encryptedPassword);
-        this.get(WS_REGISTER_PATH + mMethod +"?", params, new TextHttpResponseHandler() {
+        Log.d(LOG_TAG, "Call : " + WS_PATH + mMethod + "?name=" + mUsername +
+                "&password=" + mPassword);
+        this.get(WS_PATH + mMethod +"?", params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Log.d(LOG_TAG, "Server response failure: " + responseString);

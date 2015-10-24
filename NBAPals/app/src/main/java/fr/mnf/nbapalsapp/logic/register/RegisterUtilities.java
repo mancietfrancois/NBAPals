@@ -1,4 +1,4 @@
-package fr.mnf.nbapalsapp.register;
+package fr.mnf.nbapalsapp.logic.register;
 
 /**
  * Created by Francois on 19/10/2015.

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="fr.mnf.nbapalsapp.register.SignInActivity">
+    tools:context="fr.mnf.nbapalsapp.logic.register.SignInActivity">
 
     <!-- Login progress -->
     <ProgressBar android:id="@+id/login_progress"

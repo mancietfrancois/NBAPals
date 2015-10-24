@@ -37,8 +37,10 @@ public class Register {
         
         System.out.println("Name = " + name);
         System.out.println("Password = " + password);
+        String decryptedPassword = Encryptor.decrypt(Encryptor.getKey1(name), password);
+        System.out.println("Decrypted password : " + decryptedPassword);
         String response = "";
-        int retCode = signUpUser(name, password);
+        int retCode = signUpUser(name, decryptedPassword);
         System.out.println("Return Code : " + retCode);
         switch (retCode) {
             case CODE_CHAR_ERROR : {
@@ -80,7 +82,7 @@ public class Register {
         
         System.out.println("Name = " + name);
         System.out.println("Password = " + password);
-        String decryptedPassword = Encryptor.decrypt("Bar12345Bar12345", "ThisisASecretKey", password);
+        String decryptedPassword = Encryptor.decrypt(Encryptor.getKey1(name), password);
         System.out.println("Decrypted password : " + decryptedPassword);
         
         String response = "";

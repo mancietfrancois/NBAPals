@@ -18,6 +18,7 @@
 package fr.mnf.nbapals.nbapalsdao.bets;
 
 import fr.mnf.nbapals.nbapalsdao.NBAPalsDAO;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -25,6 +26,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.codec.binary.Base64;
 
 /**
  *
@@ -65,10 +67,15 @@ public class NBAPalsBetDAO {
         boolean insertStatus = false;
         Connection dbConn = createConnection();
         Statement stmt = dbConn.createStatement();
+        String hash;
+        String salt;
+        salt = PasswordEncryptionService.generateSalt();
+        hash = PasswordEncryptionService.getEncryptedPassword(password, salt);
         String query = "INSERT INTO " + DB_NAME + "."
-                + TABLE_GAMBLER_NAME + "(name, password) VALUES ('"
+                + TABLE_GAMBLER_NAME + "(name, password, salt) VALUES ('"
                 + name + "', '"
-                + password + "');";
+                + hash + "', '"
+                + salt + "');";
 
         System.out.println(query);
         int records = stmt.executeUpdate(query);
@@ -85,12 +92,22 @@ public class NBAPalsBetDAO {
         Connection dbConn = createConnection();
         Statement stmt = dbConn.createStatement();
         String query = "SELECT * FROM " + DB_NAME + "."
-                + TABLE_GAMBLER_NAME + " WHERE name LIKE '" + name
-                + "' AND password LIKE '" + password + "';";
+                + TABLE_GAMBLER_NAME + " WHERE name LIKE '" + name + "';";
         System.out.println(query);
         ResultSet res = stmt.executeQuery(query);
-        boolean exist = res.next();
-        return exist;
+        //Check if the result set is empty
+        if (!res.isBeforeFirst()) {
+            return false;
+        }
+        res.next();
+        String hash = res.getString("password");
+        String salt = res.getString("salt");
+        System.out.println("Hash : " + hash);
+        System.out.println("Salt : " + salt);
+        if (hash == null || salt == null) {
+            return false;
+        }
+        return PasswordEncryptionService.authenticate(password, hash, salt);
     }
 
     public static boolean registerGroup(String name, String password,

@@ -1,4 +1,4 @@
-package fr.mnf.nbapalsapp.register.utils;
+package fr.mnf.nbapalsapp.logic.utils;
 
 import android.content.Context;
 import android.os.Handler;

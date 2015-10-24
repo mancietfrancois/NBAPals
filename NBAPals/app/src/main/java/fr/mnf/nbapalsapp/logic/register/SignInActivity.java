@@ -1,4 +1,4 @@
-package fr.mnf.nbapalsapp.register;
+package fr.mnf.nbapalsapp.logic.register;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -29,7 +29,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import fr.mnf.nbapalsapp.R;
-import fr.mnf.nbapalsapp.register.utils.AlertUtilities;
+import fr.mnf.nbapalsapp.logic.utils.AlertUtilities;
+import fr.mnf.nbapalsapp.logic.utils.Encryptor;
 
 /**
  * A login screen that offers login via email/password.
@@ -176,7 +177,8 @@ public class SignInActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new RegisterClientTask(username, password, "dosignin", new RegisterClientInterface() {
+            password = Encryptor.encrypt(Encryptor.getKey1(username), password);
+            mAuthTask = new RegisterClientTask(username, password, "register/dosignin", new RegisterClientInterface() {
                 @Override
                 public void onInvokeSuccess(String response) {
                     onSigninSuccess(response);
@@ -200,14 +202,19 @@ public class SignInActivity extends AppCompatActivity {
                 //TODO start the main menu
                 saveCredentials();
                 finish();
-            }
-            if (response.getString("message") != null) {
-                mUsernameView.setError(response.getString("message"));
+            } else {
+                if (response.has("message")) {
+                    mUsernameView.setError(response.getString("message"));
+                } else {
+                    mUsernameView.setError("Wrong combination of username and password.");
+                }
                 mUsernameView.requestFocus();
                 mAuthTask = null;
             }
         } catch (JSONException e) {
+            //case no message
             e.printStackTrace();
+            mAuthTask = null;
         }
     }
 
@@ -274,14 +281,21 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void loadCredentials() {
-        mUsernameView.setText(mSharedPreferences.getString(
-                getString(R.string.register_prefs_username_active), ""));
-        mPasswordView.setText(mSharedPreferences.getString(
-                getString(R.string.register_prefs_password_active), ""));
+        String username = mSharedPreferences.getString(
+                getString(R.string.register_prefs_username_active), "");
+        //No credentials have been entered yet.
+        if (username.isEmpty()) {
+            return;
+        }
+        mUsernameView.setText(username);
+        String encryptedPassword = mSharedPreferences.getString(
+                getString(R.string.register_prefs_password_active), "");
+        mPasswordView.setText(Encryptor.decrypt(Encryptor.getKey1(username), encryptedPassword));
     }
 
     public void saveCredentials() {
-        Set<String> usernames = mSharedPreferences.getStringSet(getString(R.string.register_prefs_username_values), new HashSet<String>());
+        Set<String> usernames = mSharedPreferences.getStringSet(
+                getString(R.string.register_prefs_username_values), new HashSet<String>());
         String username = mUsernameView.getText().toString();
         if (!usernames.contains(username)) {
             usernames.add(username);
@@ -289,7 +303,8 @@ public class SignInActivity extends AppCompatActivity {
         mSharedPreferences.edit()
                 .putString(getString(R.string.register_prefs_username_active), username)
                 .putString(getString(R.string.register_prefs_password_active),
-                        mPasswordView.getText().toString())
+                        Encryptor.encrypt(Encryptor.getKey1(username),
+                                mPasswordView.getText().toString()))
                 .putStringSet(getString(R.string.register_prefs_username_values), usernames)
                 .commit();
     }

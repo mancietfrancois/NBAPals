@@ -12,9 +12,28 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Base64;
 
 public class Encryptor {
-    public static String encrypt(String key1, String key2, String value) {
+    
+    public static final int KEY_SIZE = 16;
+    public static final String DEFAULT_KEY = "ThisIsASecretKey";
+    public static final String KEY_2 = "fr.mnf.nbapals.=";
+    
+    public static String getKey1(String key1) {
+        if (key1.length() == 0) {
+            return DEFAULT_KEY;
+        }
+        if (key1.length() > KEY_SIZE) {
+            return key1.substring(0, KEY_SIZE);
+        } else {
+            while(key1.length() < KEY_SIZE) {
+                key1 = key1 + key1;
+            }
+            return key1.substring(0, KEY_SIZE);
+        }
+    }   
+    
+    public static String encrypt(String key1, String value) {
         try {
-            IvParameterSpec iv = new IvParameterSpec(key2.getBytes("UTF-8"));
+            IvParameterSpec iv = new IvParameterSpec(KEY_2.getBytes("UTF-8"));
 
             SecretKeySpec skeySpec = new SecretKeySpec(key1.getBytes("UTF-8"),
                     "AES");
@@ -30,9 +49,9 @@ public class Encryptor {
         return null;
     }
 
-    public static String decrypt(String key1, String key2, String encrypted) {
+    public static String decrypt(String key1, String encrypted) {
         try {
-            IvParameterSpec iv = new IvParameterSpec(key2.getBytes("UTF-8"));
+            IvParameterSpec iv = new IvParameterSpec(KEY_2.getBytes("UTF-8"));
 
             SecretKeySpec skeySpec = new SecretKeySpec(key1.getBytes("UTF-8"),
                     "AES");

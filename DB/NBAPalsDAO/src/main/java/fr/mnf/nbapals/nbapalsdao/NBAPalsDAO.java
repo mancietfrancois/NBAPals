@@ -117,6 +117,53 @@ public class NBAPalsDAO {
         return teams;
     }
 
+    public static List<NBAGamesDay> getMonthNBAGamesDay(String period) 
+            throws SQLException, Exception {
+        Connection dbConn = null;
+        List<NBAGamesDay> gamesDayList = null;
+        dbConn = createConnection();
+        Statement stmt = dbConn.createStatement();
+        String query = "SELECT * FROM " + TABLE_GAMES_NAME + " WHERE "
+                + "date_us REGEXP '" + period + "';";
+        System.out.println(query);
+        ResultSet results = stmt.executeQuery(query);
+        gamesDayList = new ArrayList<>();
+        NBAGamesDay gamesDay = new NBAGamesDay();
+        String date = "";
+        while (results.next()) {
+            NBAGame game = new NBAGame(
+                    results.getString("id"),
+                    Teams.fromString(results.getString("team_home")),
+                    Teams.fromString(results.getString("team_away")),
+                    Integer.parseInt(results.getString("home_score")),
+                    Integer.parseInt(results.getString("away_score")),
+                    results.getString("date_us"),
+                    results.getString("date_eu"),
+                    results.getString("time_eu"),
+                    GameStatus.fromString(results.getString("status")),
+                    results.getString("code_espn"));
+            if (date.isEmpty()) {
+                date = game.getDateUs();
+                gamesDay.addGame(game);
+                gamesDay.setDate(date);
+            } else if (date.equals(game.getDateUs())) {
+                gamesDay.addGame(game);
+            } else {
+                gamesDayList.add(gamesDay);
+                gamesDay = new NBAGamesDay();
+                gamesDay.addGame(game);                
+                date = game.getDateUs();
+                gamesDay.setDate(date);
+            }
+        }
+        //don't forget to add the last day
+        gamesDayList.add(gamesDay);
+        if (dbConn != null) {
+            dbConn.close();
+        }
+        return gamesDayList;
+    }
+
     public static boolean insertNBACalendar(List<NBAGamesDay> calendar) {
         boolean insertStatus = false;
         Connection dbConn = null;
@@ -137,15 +184,17 @@ public class NBAPalsDAO {
                 try {
                     dbConn.close();
                     insertStatus = true;
+
                 } catch (SQLException ex) {
-                    Logger.getLogger(NBAPalsDAO.class.getName()).
+                    Logger.getLogger(NBAPalsDAO.class
+                            .getName()).
                             log(Level.SEVERE, null, ex);
                 }
             }
         }
         return insertStatus;
     }
-    
+
     public static boolean insertNBA(NBA nba) {
         boolean insertStatus = false;
         Connection dbConn = null;
@@ -163,8 +212,10 @@ public class NBAPalsDAO {
                 try {
                     dbConn.close();
                     insertStatus = true;
+
                 } catch (SQLException ex) {
-                    Logger.getLogger(NBAPalsDAO.class.getName()).
+                    Logger.getLogger(NBAPalsDAO.class
+                            .getName()).
                             log(Level.SEVERE, null, ex);
                 }
             }
@@ -190,8 +241,10 @@ public class NBAPalsDAO {
                 try {
                     dbConn.close();
                     insertStatus = true;
+
                 } catch (SQLException ex) {
-                    Logger.getLogger(NBAPalsDAO.class.getName()).
+                    Logger.getLogger(NBAPalsDAO.class
+                            .getName()).
                             log(Level.SEVERE, null, ex);
                 }
             }
@@ -222,14 +275,16 @@ public class NBAPalsDAO {
             // When record is successfully inserted
             if (records > 0) {
                 insertStatus = true;
+
             }
         } catch (SQLException ex) {
-            Logger.getLogger(NBAPalsDAO.class.getName())
+            Logger.getLogger(NBAPalsDAO.class
+                    .getName())
                     .log(Level.SEVERE, null, ex);
         }
         return insertStatus;
     }
-    
+
     public static boolean insertNBATeam(NBATeam aTeam, Connection dbConn) {
         boolean insertStatus = false;
         try {
@@ -237,7 +292,7 @@ public class NBAPalsDAO {
             String query = "INSERT INTO " + DB_NAME + "."
                     + TABLE_TEAMS_NAME + " VALUES ('"
                     + aTeam.getTeamId().getCity() + "', '"
-                    + aTeam.getTeamId().getName()+ "', '"
+                    + aTeam.getTeamId().getName() + "', '"
                     + aTeam.getTeamId().getShortname() + "', '"
                     + aTeam.getConference() + "', '"
                     + aTeam.getDivision() + "', "
@@ -256,9 +311,11 @@ public class NBAPalsDAO {
             // When record is successfully inserted
             if (records > 0) {
                 insertStatus = true;
+
             }
         } catch (SQLException ex) {
-            Logger.getLogger(NBAPalsDAO.class.getName())
+            Logger.getLogger(NBAPalsDAO.class
+                    .getName())
                     .log(Level.SEVERE, null, ex);
         }
         return insertStatus;
@@ -269,15 +326,15 @@ public class NBAPalsDAO {
         try {
             Statement stmt = dbConn.createStatement();
             String query = "UPDATE " + DB_NAME + "." + TABLE_TEAMS_NAME
-                    + " SET wins = " + team.getWins() 
-                    + ", loss = " + team.getLoss() 
-                    + ", wins_conf = " + team.getConfWins() 
-                    + ", loss_conf = " + team.getConfLoss() 
-                    + ", wins_div = " + team.getDivWins() 
-                    + ", loss_div = " + team.getDivLoss() 
-                    + ", conf_ranking = " + team.getConfRanking() 
+                    + " SET wins = " + team.getWins()
+                    + ", loss = " + team.getLoss()
+                    + ", wins_conf = " + team.getConfWins()
+                    + ", loss_conf = " + team.getConfLoss()
+                    + ", wins_div = " + team.getDivWins()
+                    + ", loss_div = " + team.getDivLoss()
+                    + ", conf_ranking = " + team.getConfRanking()
                     + ", div_ranking = " + team.getDivRanking()
-                    + " WHERE " + TABLE_TEAMS_NAME 
+                    + " WHERE " + TABLE_TEAMS_NAME
                     + ".shortname = " + team.getTeamId().getShortname() + "";
 
             // System.out.println(query);
@@ -285,22 +342,24 @@ public class NBAPalsDAO {
             // When record is successfully inserted
             if (records > 0) {
                 insertStatus = true;
+
             }
         } catch (SQLException ex) {
-            Logger.getLogger(NBAPalsDAO.class.getName())
+            Logger.getLogger(NBAPalsDAO.class
+                    .getName())
                     .log(Level.SEVERE, null, ex);
         }
         return insertStatus;
     }
-    
-    public static NBAGamesDay getNBAGamesDay(String date){
+
+    public static NBAGamesDay getNBAGamesDay(String date) {
         Connection dbConn = null;
         NBAGamesDay gamesDay = null;
         try {
             dbConn = createConnection();
             try {
                 Statement stmt = dbConn.createStatement();
-                String query = "SELECT * FROM " + TABLE_GAMES_NAME +" WHERE "
+                String query = "SELECT * FROM " + TABLE_GAMES_NAME + " WHERE "
                         + "date_us LIKE " + date + "";
                 // System.out.println(query);
                 ResultSet results = stmt.executeQuery(query);
@@ -308,20 +367,22 @@ public class NBAPalsDAO {
                 while (results.next()) {
                     gamesDay.addGame(new NBAGame(
                             results.getString("id"),
-                            Teams.fromString(results.getString("team_home")), 
-                            Teams.fromString(results.getString("team_away")), 
+                            Teams.fromString(results.getString("team_home")),
+                            Teams.fromString(results.getString("team_away")),
                             Integer.parseInt(results.getString("home_score")),
-                            Integer.parseInt(results.getString("away_score")), 
+                            Integer.parseInt(results.getString("away_score")),
                             results.getString("date_us"),
                             results.getString("date_eu"),
-                            results.getString("time_eu"), 
-                            GameStatus.fromString(results.getString("status")), 
+                            results.getString("time_eu"),
+                            GameStatus.fromString(results.getString("status")),
                             results.getString("code_espn")));
+
                 }
                 // System.out.println(records);
                 // When record is successfully inserted
             } catch (SQLException ex) {
-                Logger.getLogger(NBAPalsDAO.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(NBAPalsDAO.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -330,15 +391,17 @@ public class NBAPalsDAO {
             if (dbConn != null) {
                 try {
                     dbConn.close();
+
                 } catch (SQLException ex) {
-                    Logger.getLogger(NBAPalsDAO.class.getName()).
+                    Logger.getLogger(NBAPalsDAO.class
+                            .getName()).
                             log(Level.SEVERE, null, ex);
                 }
             }
         }
         return gamesDay;
     }
-    
+
     public static List<NBAGame> getScores(NBATeam teamA, NBATeam teamB) {
         Connection dbConn = null;
         List<NBAGame> games = null;
@@ -351,7 +414,7 @@ public class NBAPalsDAO {
                         + teamA.getTeamId() + " AND team_away LIKE "
                         + teamB.getTeamId() + ") OR (team_home LIKE "
                         + teamB.getTeamId() + " AND team_away LIKE "
-                        + teamA.getTeamId() +")) AND "
+                        + teamA.getTeamId() + ")) AND "
                         + "(status LIKE FINAL OR status LIKE "
                         + "FINAL/OT)";
                 // System.out.println(query);
@@ -360,20 +423,22 @@ public class NBAPalsDAO {
                 while (results.next()) {
                     games.add(new NBAGame(
                             results.getString("id"),
-                            Teams.fromString(results.getString("team_home")), 
-                            Teams.fromString(results.getString("team_away")), 
+                            Teams.fromString(results.getString("team_home")),
+                            Teams.fromString(results.getString("team_away")),
                             Integer.parseInt(results.getString("home_score")),
-                            Integer.parseInt(results.getString("away_score")), 
+                            Integer.parseInt(results.getString("away_score")),
                             results.getString("date_us"),
                             results.getString("date_eu"),
-                            results.getString("time_eu"), 
-                            GameStatus.fromString(results.getString("status")), 
+                            results.getString("time_eu"),
+                            GameStatus.fromString(results.getString("status")),
                             results.getString("code_espn")));
+
                 }
                 // System.out.println(records);
                 // When record is successfully inserted
             } catch (SQLException ex) {
-                Logger.getLogger(NBAPalsDAO.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(NBAPalsDAO.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -382,8 +447,10 @@ public class NBAPalsDAO {
             if (dbConn != null) {
                 try {
                     dbConn.close();
+
                 } catch (SQLException ex) {
-                    Logger.getLogger(NBAPalsDAO.class.getName()).
+                    Logger.getLogger(NBAPalsDAO.class
+                            .getName()).
                             log(Level.SEVERE, null, ex);
                 }
             }

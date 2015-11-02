@@ -2,7 +2,7 @@
 <resources>
     <string name="internet_no_wi_fi">You are not connected to a wifi</string>
     <string name="internet_no_internet">You are not connected to the internet</string>
-    <string name="internet_service_offline">Sorry, it looks like that NBAPals is off line :/</string>
+    <string name="internet_service_offline">Sorry, it looks like NBAPals is off line :/</string>
     <string name="internet_unknown_exception">Sorry something went wrong :/ Try again in a few minutes</string>
 
     <string name="title_internet">You are offline, you fool!</string>

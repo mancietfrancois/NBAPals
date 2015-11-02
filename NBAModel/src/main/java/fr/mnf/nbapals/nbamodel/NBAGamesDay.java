@@ -26,6 +26,7 @@ import java.util.List;
  */
 public class NBAGamesDay {
     
+    private String date;
     private List<NBAGame> games;
 
     public NBAGamesDay() {
@@ -47,7 +48,12 @@ public class NBAGamesDay {
     public void removeGame(NBAGame game) {
         this.games.remove(game);
     }
-    
-    
-    
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }    
 }

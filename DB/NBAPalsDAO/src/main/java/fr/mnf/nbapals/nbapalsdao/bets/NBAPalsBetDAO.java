@@ -18,7 +18,6 @@
 package fr.mnf.nbapals.nbapalsdao.bets;
 
 import fr.mnf.nbapals.nbapalsdao.NBAPalsDAO;
-import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -26,7 +25,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.codec.binary.Base64;
 
 /**
  *
@@ -84,6 +82,7 @@ public class NBAPalsBetDAO {
         if (records > 0) {
             insertStatus = true;
         }
+        dbConn.close();
         return insertStatus;
     }
 

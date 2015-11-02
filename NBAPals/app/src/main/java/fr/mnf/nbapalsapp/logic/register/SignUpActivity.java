@@ -15,12 +15,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.loopj.android.http.TextHttpResponseHandler;
+
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import cz.msebera.android.httpclient.Header;
 import fr.mnf.nbapalsapp.R;
 import fr.mnf.nbapalsapp.logic.utils.AlertUtilities;
 import fr.mnf.nbapalsapp.logic.utils.Encryptor;
@@ -110,7 +113,7 @@ public class SignUpActivity extends AppCompatActivity {
             mUsernameView.setError(getString(R.string.error_field_required));
             focusView = mUsernameView;
             cancel = true;
-        // Check for a valid password, if the user entered one.
+            // Check for a valid password, if the user entered one.
         } else if (!RegisterUtilities.isEmailValid(username)) {
             Log.d(LOG_TAG, "Username is not valid");
             mUsernameView.setError(getString(R.string.error_invalid_email));
@@ -126,7 +129,7 @@ public class SignUpActivity extends AppCompatActivity {
             mPasswordView.setError(getString(R.string.error_forbidden_char_password));
             focusView = mPasswordView;
             cancel = true;
-        //Check if the repeated password is valid, and similar to the first one
+            //Check if the repeated password is valid, and similar to the first one
         } else if (TextUtils.isEmpty(passwordConfirmed)) {
             Log.d(LOG_TAG, "password confirmed is empty");
             mRepeatPasswordView.setError(getString(R.string.error_field_required));
@@ -150,23 +153,26 @@ public class SignUpActivity extends AppCompatActivity {
             showProgress(true);
             password = Encryptor.encrypt(Encryptor.getKey1(username), password);
             mAuthTask = new RegisterClientTask(username, password, "register/dosignup",
-                    new RegisterClientInterface() {
-                @Override
-                public void onInvokeSuccess(String response) {
-                    onSignupSuccess(response);
-                }
+                    new TextHttpResponseHandler() {
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers,
+                                              String responseString, Throwable throwable) {
+                            onSignupFailed(responseString);
+                        }
 
-                @Override
-                public void onInvokeFailed(String response) {
-                    onSignupFailed(response);
-                }
-            });
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers,
+                                              String responseString) {
+                            onSignupSuccess(responseString);
+                        }
+                    });
             mAuthTask.invokeWS(getApplicationContext());
         }
     }
 
     /**
      * Called when a response is received from the service
+     *
      * @param serverResponse
      */
     private void onSignupSuccess(String serverResponse) {
@@ -176,6 +182,7 @@ public class SignUpActivity extends AppCompatActivity {
             boolean status = response.getBoolean("status");
             if (status) {
                 saveCredentials();
+                setResult(RESULT_OK);
                 finish();
             } else {
                 if (response.has("message")) {
@@ -195,6 +202,7 @@ public class SignUpActivity extends AppCompatActivity {
     /**
      * Called when the server gives no response. Typically if an web connection is not allowed,
      * or if the service is not connected.
+     *
      * @param serverResponse
      */
     private void onSignupFailed(String serverResponse) {

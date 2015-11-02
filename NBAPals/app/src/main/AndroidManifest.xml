@@ -23,6 +23,9 @@
             android:name=".logic.bets.BetActivity"
             android:label="@string/title_activity_bet"
             android:theme="@style/AppTheme.NoActionBar" >
+
+        </activity>
+        <activity android:name=".logic.vector.VectorDrawableActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

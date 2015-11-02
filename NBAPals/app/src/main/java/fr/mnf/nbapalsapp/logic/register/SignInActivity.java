@@ -22,13 +22,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.loopj.android.http.TextHttpResponseHandler;
+
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import cz.msebera.android.httpclient.Header;
 import fr.mnf.nbapalsapp.R;
+import fr.mnf.nbapalsapp.logic.bets.BetActivity;
 import fr.mnf.nbapalsapp.logic.utils.AlertUtilities;
 import fr.mnf.nbapalsapp.logic.utils.Encryptor;
 
@@ -115,6 +119,21 @@ public class SignInActivity extends AppCompatActivity {
         populateAutoComplete();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == REQUEST_SIGNUP) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                saveCredentials();
+                Intent intent = new Intent(this, BetActivity.class);
+                startActivity(intent);
+            } else {
+                //do nothing
+            }
+        }
+    }
+
     private void populateAutoComplete() {
         Set<String> usernames = mSharedPreferences.getStringSet(getString(R.string.register_prefs_username_values),
                 new HashSet<String>());
@@ -178,15 +197,16 @@ public class SignInActivity extends AppCompatActivity {
             // perform the user login attempt.
             showProgress(true);
             password = Encryptor.encrypt(Encryptor.getKey1(username), password);
-            mAuthTask = new RegisterClientTask(username, password, "register/dosignin", new RegisterClientInterface() {
+            mAuthTask = new RegisterClientTask(username, password, "register/dosignin",
+                    new TextHttpResponseHandler() {
                 @Override
-                public void onInvokeSuccess(String response) {
-                    onSigninSuccess(response);
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    onSigninFailed(responseString);
                 }
 
                 @Override
-                public void onInvokeFailed(String response) {
-                    onSigninFailed(response);
+                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                    onSigninSuccess(responseString);
                 }
             });
             mAuthTask.invokeWS(getApplicationContext());
@@ -199,9 +219,9 @@ public class SignInActivity extends AppCompatActivity {
             JSONObject response = new JSONObject(serverResponse);
             boolean status = response.getBoolean("status");
             if (status) {
-                //TODO start the main menu
                 saveCredentials();
-                finish();
+                Intent intent = new Intent(this, BetActivity.class);
+                startActivity(intent);
             } else {
                 if (response.has("message")) {
                     mUsernameView.setError(response.getString("message"));

@@ -66,6 +66,19 @@ public class NBAPalsDAOTest {
         List<NBATeam> result = NBAPalsDAO.getNBATeams();
         assertTrue(result.size() == 30);
     }
+    
+    @Test
+    public void testgetMonthNBAGamesDay() {
+        System.out.println("getMonthNBAGamesDay");
+        List<NBAGamesDay> result = null;
+        try {
+            result = NBAPalsDAO.getMonthNBAGamesDay("2015-10-..");
+        } catch (Exception ex) {
+            Logger.getLogger(NBAPalsDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("Result size : " + result.size());
+        assertTrue(result.size() == 5);
+    }
 
     /**
      * Test of insertNBACalendar method, of class DBPronostixDAO.
